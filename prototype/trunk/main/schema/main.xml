@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app:dataModel name="Class1" domain="com.casp.poo" xmlns:app="xview-dm.xsd">
+    <app:type name="AddressType">
+        <app:elements>
+            <app:integer name="zipcode">
+                <app:restriction>
+                    <app:notNull/>
+                    <app:positive/>
+                </app:restriction>
+            </app:integer>
+            <app:string name="city">
+                <app:restriction>
+                    <app:notNull/>
+                    <app:regex>^[a-zA-Z].*$</app:regex>
+                    <app:maxLen>32</app:maxLen>
+                </app:restriction>
+            </app:string>
+            <app:string name="street">
+                <app:restriction>
+                    <app:notNull/>
+                    <app:maxLen>32</app:maxLen>
+                </app:restriction>
+            </app:string>
+            <app:string name="no">
+                <app:restriction>
+                    <app:notNull/>
+                    <app:maxLen>32</app:maxLen>
+                </app:restriction>
+            </app:string>
+        </app:elements>
+    </app:type>
+
+    <app:elements>
+        <app:string name="firstname">
+            <app:restriction>
+                <app:notNull/>
+                <app:regex>^\w*$</app:regex>
+                <app:type/>
+            </app:restriction>
+        </app:string>
+
+        <app:string name="lastName">
+            <app:restriction>
+                <app:notNull/>
+                <app:regex>^\w*$</app:regex>
+            </app:restriction>
+        </app:string>
+
+        <app:integer name="id">
+            <app:restriction>
+                <app:notNull/>
+                <app:maxValue>999999</app:maxValue>
+                <app:positive/>
+            </app:restriction>
+        </app:integer>
+
+        <app:composition name="address" typename="AddressType"/>
+    </app:elements>
+</app:dataModel>

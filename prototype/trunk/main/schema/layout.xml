@@ -1,0 +1,13 @@
+<layout xmlns="xview-ld.xsd" name="layout1" domain="dg">
+    <grid>
+        <row>
+            <cell colSpan="1" name="cell1"/>
+        </row>
+        <row>
+            <cell name="cell2" flow="horizontal"/>
+        </row>
+        <row>
+            <cell name="cell3" flow="horizontal"/>
+        </row>
+    </grid>
+</layout>

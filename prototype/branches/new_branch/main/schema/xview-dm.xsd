@@ -1,0 +1,352 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="xview-dm.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="dataModel" type="main:DataModelType" xmlns:main="xview-dm.xsd"/>
+
+    <xs:group name="data-types">
+        <xs:sequence>
+            <xs:element name="boolean">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:element name="restriction" type="main:BooleanRestriction" minOccurs="0"
+                                            xmlns:main="xview-dm.xsd"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="list" type="main:ItemListType" xmlns:main="xview-dm.xsd"/>
+
+            <xs:element name="map">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:element name="restriction" type="main:ListRestriction" minOccurs="0"
+                                            xmlns:main="xview-dm.xsd"/>
+                                <xs:element name="item" type="main:MapItemType" minOccurs="0" maxOccurs="unbounded"
+                                            xmlns:main="xview-dm.xsd"/>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+                <xs:unique name="item">
+                    <xs:selector xpath="item"/>
+                    <xs:field xpath="key"/>
+                </xs:unique>
+            </xs:element>
+
+            <xs:element name="composition">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:group ref="main:data-types" xmlns:main="xview-dm.xsd" minOccurs="0"/>
+                            </xs:sequence>
+                            <xs:attribute name="type" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="dateTime">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:element name="restriction" type="main:DateTimeRestriction" minOccurs="0"
+                                            xmlns:main="xview-dm.xsd"/>
+                            </xs:sequence>
+                            <xs:attribute name="calendarType" type="main:CalendarTypes" xmlns:main="xview-dm.xsd"/>
+                            <xs:attribute name="timeZone" type="xs:string"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="currency">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:element name="restriction" type="main:NumericRestriction" minOccurs="0"
+                                            xmlns:main="xview-dm.xsd"/>
+                            </xs:sequence>
+                            <xs:attribute name="currencyType" type="main:CurrencyTypes" use="optional" default="IRR"
+                                          xmlns:main="xview-dm.xsd"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="decimal">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:element name="restriction" type="main:NumericRestriction" minOccurs="0"
+                                            xmlns:main="xview-dm.xsd"/>
+                            </xs:sequence>
+                            <xs:attribute name="digits" type="xs:int"/>
+                            <xs:attribute name="precision" type="xs:int"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="file">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:element name="restriction" type="main:FileRestriction" minOccurs="0"
+                                            xmlns:main="xview-dm.xsd"/>
+                            </xs:sequence>
+                            <xs:attribute name="dataType" type="xs:string"/>
+                            <xs:attribute name="source" type="xs:string"/>
+                            <xs:attribute name="size" type="xs:int"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="double">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:element name="restriction" type="main:NumericRestriction" minOccurs="0"
+                                            xmlns:main="xview-dm.xsd"/>
+                            </xs:sequence>
+                            <xs:attribute name="digits" xmlns:main="xview-dm.xsd"/>
+                            <xs:attribute name="precision" xmlns:main="xview-dm.xsd"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="duration">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="required" xmlns:main="xview-dm.xsd"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="integer">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:element name="restriction" type="main:NumericRestriction" minOccurs="0"
+                                            xmlns:main="xview-dm.xsd"/>
+                            </xs:sequence>
+                            <xs:attribute name="digits" type="xs:int"/>
+                            <xs:attribute name="precision" type="xs:int"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="string">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                            <xs:sequence>
+                                <xs:element name="restriction" type="main:StringRestriction" minOccurs="0"
+                                            xmlns:main="xview-dm.xsd"/>
+                            </xs:sequence>
+                            <xs:attribute name="lang" type="main:LocaleTypes" xmlns:main="xview-dm.xsd"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:complexType name="DataTypes">
+        <xs:group ref="main:data-types" xmlns:main="xview-dm.xsd"/>
+        <xs:attribute name="name" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="BaseDataModelType">
+        <xs:complexContent>
+            <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                <xs:sequence>
+                    <xs:element type="main:DataTypes" name="elements" minOccurs="0" xmlns:main="xview-dm.xsd"/>
+                    <xs:element type="main:DateTimeRestriction" name="dateTimeRestriction" minOccurs="0"
+                                xmlns:main="xview-dm.xsd"/>
+                    <xs:element type="main:ListRestriction" name="listRestriction" minOccurs="0"
+                                xmlns:main="xview-dm.xsd"/>
+                    <xs:element type="main:StringRestriction" name="stringRestriction" minOccurs="0"
+                                xmlns:main="xview-dm.xsd"/>
+                    <xs:element type="main:NumericRestriction" name="numericRestriction" minOccurs="0"
+                                xmlns:main="xview-dm.xsd"/>
+                    <xs:element type="main:BaseDataModelType" name="type" minOccurs="0" xmlns:main="xview-dm.xsd"/>
+                </xs:sequence>
+                <xs:attribute type="xs:string" name="name" use="optional" xmlns:main="xview-dm.xsd"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DataModelType">
+        <xs:complexContent>
+            <xs:extension base="main:BaseDataModelType" xmlns:main="xview-dm.xsd">
+                <xs:attribute type="xs:string" name="domain" use="required" xmlns:main="xview-dm.xsd"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!--<xs:complexType name="typeDefinition">-->
+    <!--<xs:complexContent>-->
+    <!--<xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">-->
+    <!--<xs:sequence>-->
+    <!--<xs:group ref="main:data-types" xmlns:main="xview-dm.xsd"/>-->
+    <!--</xs:sequence>-->
+    <!--</xs:extension>-->
+    <!--</xs:complexContent>-->
+    <!--</xs:complexType>-->
+
+    <xs:complexType name="ItemListType">
+        <xs:complexContent>
+            <xs:extension base="main:BaseType" xmlns:main="xview-dm.xsd">
+                <xs:sequence>
+                    <xs:element name="item" type="xs:string" minOccurs="0" maxOccurs="unbounded"
+                                xmlns:main="xview-dm.xsd"/>
+                    <xs:element name="restriction" type="main:ListRestriction" minOccurs="0" maxOccurs="1"
+                                xmlns:main="xview-dm.xsd"/>
+                </xs:sequence>
+                <xs:attribute name="type" type="xs:string"/>
+            </xs:extension>
+        </xs:complexContent>
+
+    </xs:complexType>
+
+    <xs:complexType name="MapItemType">
+        <xs:sequence>
+            <xs:element name="key" type="xs:anyType"/>
+            <xs:element name="value" type="xs:anyType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BaseType">
+        <xs:attribute name="name" type="xs:string" use="required" xmlns:main="xview-dm.xsd"/>
+        <xs:attribute name="readonly" type="xs:boolean" use="optional" default="true" xmlns:main="xview-dm.xsd"/>
+    </xs:complexType>
+
+    <!--***************************************restrictions***************************************-->
+
+    <xs:complexType name="NumericRestriction">
+        <xs:complexContent>
+            <xs:extension base="RestrictionBase">
+                <xs:sequence>
+                    <xs:element type="xs:string" name="minValue"/>
+                    <xs:element type="xs:string" name="maxValue"/>
+                    <xs:element type="xs:string" name="format"/>
+                    <xs:element type="xs:string" name="notZero"/>
+                    <xs:element type="xs:string" name="positive"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="StringRestriction">
+        <xs:complexContent>
+            <xs:extension base="RestrictionBase">
+                <xs:sequence>
+                    <xs:element type="xs:string" name="locale"/>
+                    <xs:element type="xs:string" name="type"/>
+                    <xs:element type="xs:string" name="regex"/>
+                    <xs:element type="xs:string" name="maxLen"/>
+                    <xs:element type="xs:string" name="minLen"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ListRestriction">
+        <xs:complexContent>
+            <xs:extension base="RestrictionBase">
+                <xs:sequence>
+                    <xs:element type="xs:string" name="minSize"/>
+                    <!--<xs:element type="xs:string" name="dataType"/>-->
+                    <xs:element type="xs:string" name="maxSize"/>
+                    <xs:element type="xs:string" name="notContains"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DateTimeRestriction">
+        <xs:complexContent>
+            <xs:extension base="RestrictionBase">
+                <xs:sequence>
+                    <xs:element type="xs:string" name="dateTimeFormat"/>
+                    <xs:element type="xs:string" name="calendarType"/>
+                    <xs:element type="xs:string" name="dateGreaterThan"/>
+                    <xs:element type="xs:string" name="dateSmallerThan"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="FileRestriction">
+        <xs:complexContent>
+            <xs:extension base="RestrictionBase">
+                <xs:sequence>
+                    <xs:element name="minSize" type="xs:string"/>
+                    <xs:element name="maxSize" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="BooleanRestriction">
+        <xs:complexContent>
+            <xs:extension base="RestrictionBase"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="RestrictionBase">
+        <xs:sequence>
+            <xs:element type="xs:string" name="notNull"/>
+            <xs:element type="xs:string" name="notEqualTo"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="optional" xmlns:main="xview-dm.xsd"/>
+        <xs:attribute name="combination" type="main:CombinationType" use="optional" xmlns:main="xview-dm.xsd"/>
+
+    </xs:complexType>
+
+    <!-- **************************************Enums**************************************** -->
+    <xs:simpleType name="CalendarTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Gregorian"/>
+            <xs:enumeration value="Jalali"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="LocaleTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FA"/>
+            <xs:enumeration value="EN"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="CombinationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="all"/>
+            <xs:enumeration value="any"/>
+            <xs:enumeration value="none"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="CurrencyTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="US"/>
+            <xs:enumeration value="EURO"/>
+            <xs:enumeration value="IRR"/>
+            <xs:enumeration value="POND"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- ****************************************************************************** -->
+</xs:schema>

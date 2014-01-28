@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:main="xviewfd.xsd"
+           targetNamespace="xviewfd.xsd">
+
+    <xs:element name="page" type="main:pageType" xmlns:main="xviewfd.xsd"/>
+
+    <xs:complexType name="rowType">
+        <xs:sequence>
+            <xs:element type="main:colType" name="cell" maxOccurs="unbounded" minOccurs="0"
+                        xmlns:main="xviewfd.xsd"/>
+        </xs:sequence>
+
+        <xs:attribute type="xs:string" name="height" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="colType">
+        <xs:sequence>
+            <xs:group ref="main:WidgetsGroup" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+
+        <xs:attribute type="xs:string" name="width" use="optional"/>
+        <xs:attribute type="xs:string" name="colSpan" use="optional"/>
+        <xs:attribute type="xs:string" name="rowSpan" use="optional"/>
+        <xs:attribute type="main:FlowType" name="flow"/>
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="pageType">
+        <xs:choice>
+            <xs:element type="main:layoutType" name="layout" minOccurs="0" maxOccurs="1"/>
+            <xs:group ref="main:WidgetsGroup" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:choice>
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="layout"/>
+        <xs:attribute type="xs:string" name="dataModel"/>
+    </xs:complexType>
+
+    <xs:complexType name="gridType">
+        <xs:sequence>
+            <xs:element type="main:rowType" name="row" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute type="main:FlowType" name="flow"/>
+    </xs:complexType>
+
+    <xs:complexType name="layoutType">
+        <xs:sequence>
+            <xs:element type="main:gridType" name="grid" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="anchor"/>
+        <xs:attribute type="xs:string" name="cellSpacing"/>
+        <xs:attribute type="xs:string" name="cellPadding"/>
+        <xs:attribute type="xs:string" name="width"/>
+        <xs:attribute type="xs:string" name="height"/>
+    </xs:complexType>
+
+    <xs:simpleType name="FlowType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="horizontal"/>
+            <xs:enumeration value="vertical"/>
+            <xs:enumeration value="none"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="SelectionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="single"/>
+            <xs:enumeration value="multiple"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TextAlignment">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+            <xs:enumeration value="center"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:complexType name="baseAttributes">
+        <xs:attribute type="xs:string" name="source" use="optional"/>
+        <xs:attribute type="xs:string" name="name" use="required"/>
+        <xs:attribute type="xs:string" name="label" use="required"/>
+        <xs:attribute type="xs:string" name="tooltip" use="optional"/>
+        <xs:attribute type="xs:boolean" name="enabled" use="optional"/>
+        <xs:attribute type="xs:boolean" name="visible" use="optional"/>
+        <xs:attribute type="xs:string" name="tabindex" use="optional"/>
+        <xs:attribute type="xs:string" name="height" use="optional"/>
+        <xs:attribute type="xs:string" name="width" use="optional"/>
+        <xs:attribute type="xs:string" name="horizontalAlignment" use="optional"/>
+        <xs:attribute type="xs:string" name="verticalAlignment" use="optional"/>
+        <xs:attribute type="xs:string" name="location" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="ComboBoxType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RadioButtonType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes">
+                <xs:attribute type="xs:boolean" name="checked" use="optional"/>
+                <xs:attribute type="xs:string" name="groupName" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DatePickerType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes">
+                <xs:attribute type="xs:string" name="selectionMode" use="optional"/>
+                <xs:attribute type="xs:string" name="showNextPrevMonth" use="optional"/>
+                <xs:attribute type="xs:string" name="showDayHeader" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ListBoxType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes">
+
+                <!--<xs:attribute type="xs:string" name="rows" use="optional"/>-->
+                <xs:attribute type="main:SelectionType" name="selectionMode" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ButtonType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ImageType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes">
+                <xs:attribute type="xs:string" name="src" use="optional"/>
+                <xs:attribute type="xs:string" name="alt" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="LabelType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SpinnerType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes">
+                <xs:attribute type="xs:string" name="maxValue" use="optional"/>
+                <xs:attribute type="xs:string" name="minValue" use="optional"/>
+                <xs:attribute type="xs:string" name="type" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CheckBoxType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes">
+                <xs:attribute type="xs:boolean" name="checked" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TextBoxType">
+        <xs:complexContent>
+            <xs:extension base="main:baseAttributes">
+                <xs:attribute type="xs:boolean" name="readonly" use="optional"/>
+                <xs:attribute type="main:TextAlignment" name="textAlignment" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+    <xs:group name="WidgetsGroup">
+        <xs:choice>
+            <xs:element name="spinner" type="main:SpinnerType" minOccurs="0"/>
+            <xs:element name="datePicker" type="main:DatePickerType" minOccurs="0"/>
+            <xs:element name="button" type="main:ButtonType" minOccurs="0"/>
+            <xs:element name="combo" type="main:ComboBoxType" minOccurs="0"/>
+            <xs:element name="checkBox" type="main:CheckBoxType" minOccurs="0"/>
+            <xs:element name="radioButton" type="main:RadioButtonType" minOccurs="0"/>
+            <xs:element name="image" type="main:ImageType" minOccurs="0"/>
+            <xs:element name="label" type="main:LabelType" minOccurs="0"/>
+            <xs:element name="listBox" type="main:ListBoxType" minOccurs="0"/>
+            <xs:element name="textBox" type="main:TextBoxType" minOccurs="0"/>
+            <xs:element name="layout" type="main:layoutType" minOccurs="0"/>
+        </xs:choice>
+    </xs:group>
+</xs:schema>
